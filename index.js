@@ -1,8 +1,24 @@
-import express from "express";
-import cors from "cors";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './App';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
-const app=express();
-app.use(cors());
-
-
-app.listen(5000,()=>console.log("app is running"));
+const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        useErrorBoundary: true,
+        retry: 1,
+      },
+    },
+  });
+  
+ReactDOM.render(
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </QueryClientProvider>,
+  document.getElementById('root')
+);
